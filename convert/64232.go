@@ -1,4 +1,4 @@
-package i2pasta_convert ///convert
+package i2pconv ///convert
 
 import (
 	"crypto/sha256"
