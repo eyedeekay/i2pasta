@@ -5,7 +5,7 @@ import (
 	"encoding/base32"
 	"encoding/base64"
     "strings"
-    "i2pasta/nup"
+    "github.com/eyedeekay/i2pasta/nup"
 )
 
 type I2pconv struct{
