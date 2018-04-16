@@ -4,15 +4,15 @@ import (
 	"crypto/sha256"
 	"encoding/base32"
 	"encoding/base64"
-    "strings"
-    "github.com/eyedeekay/i2pasta/nup"
+	"github.com/eyedeekay/i2pasta/nup"
+	"strings"
 )
 
-type I2pconv struct{
-    l i2pasta.I2plog
+type I2pconv struct {
+	l i2pasta.I2plog
 }
 
-func (i *I2pconv)I2p64to32(b64 string) (string, error) {
+func (i *I2pconv) I2p64to32(b64 string) (string, error) {
 	raw64, err := base64.NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-~").DecodeString(b64) //.DecodeString(b64)
 	if i.l.Error(err, "i2pdig.go Base64 Conversion", string(raw64)) {
 		hash := sha256.New()
@@ -26,4 +26,3 @@ func (i *I2pconv)I2p64to32(b64 string) (string, error) {
 	}
 	return "", err
 }
-
