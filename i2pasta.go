@@ -1,7 +1,7 @@
 package i2pasta
 
 import (
-    "./convert"
+    "github.com/eyedeekay/convert"
 )
 
 func test_import(){
