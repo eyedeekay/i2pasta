@@ -15,17 +15,17 @@ type I2paddresshelper struct{
     rq *http.Request
 }
 
-func (* I2paddresshelper) getRequest(jump string) string{
+func (i *I2paddresshelper) getRequest(jump string) string{
 
     return ""
 }
 
-func (* I2paddresshelper) QueryHelper(addr string){
+func (i *I2paddresshelper) QueryHelper(addr string){
 
 }
 
-func (* I2paddresshelper) QuerySHelper(addr, jump string){
-    getRequest(jump)
+func (i *I2paddresshelper) QuerySHelper(addr, jump string){
+    i.getRequest(jump)
 }
 
 func NewI2pAddressHelper(jump string, host... string) *I2paddresshelper{
