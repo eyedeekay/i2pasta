@@ -30,16 +30,16 @@ func (i *I2paddresshelper) getHostname(addr, jump string) string {
 	resp, err := i.client.Get(i.fixUrl(addr))
 	if i.l.Error(err, "Sent request.") {
 		resp.Body.Close()
-		result, rerr := ioutil.ReadAll(resp.Body)
-		if i.l.Error(rerr, "Read response.") {
-			if location := string(resp.Header.Get("Location")); location != "" {
-				contents := strings.SplitN(location, "=", 2)
-				if len(contents) == 2 {
-					hostname := strings.Replace(strings.Replace(strings.Replace(contents[0], "http://", "", -1), "?i2paddresshelper", "", -1), "/", "", -1)
-					return hostname
-				}
+		//result, rerr := ioutil.ReadAll(resp.Body)
+		//if i.l.Error(rerr, "Read response.") {
+		if location := string(resp.Header.Get("Location")); location != "" {
+			contents := strings.SplitN(location, "=", 2)
+			if len(contents) == 2 {
+				hostname := strings.Replace(strings.Replace(strings.Replace(contents[0], "http://", "", -1), "?i2paddresshelper", "", -1), "/", "", -1)
+				return hostname
 			}
 		}
+		//}
 	}
 	return ""
 }
