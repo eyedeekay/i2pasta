@@ -1,9 +1,9 @@
 package i2paddresshelper
 
-import {
+import (
     "net/http"
     "github.com/cryptix/goSam"
-}
+)
 
 type I2paddresshelper struct{
     jumpHost string
