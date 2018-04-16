@@ -62,7 +62,7 @@ func NewI2pAddressHelper(jump string, host... string) *I2paddresshelper{
 	}
 	Log("i2pdig.go Setting up Client")
 	i.client = &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) i.l.Error {
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
 		},
 		Transport: i.transport,
