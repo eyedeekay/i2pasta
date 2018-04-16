@@ -38,7 +38,7 @@ func (i *I2paddresshelper) getHostinfo(addr, jump string) (string, string) {
 			}
 		}
 	}
-	return ""
+	return addr, "jumperror"
 }
 
 func (i *I2paddresshelper) QueryHelper(addr string) (string, string) {
