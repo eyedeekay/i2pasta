@@ -24,7 +24,7 @@ func (i *I2plog) Error(err error, inp ...string) bool {
 }
 
 func (i *I2plog) Log(inp ...string) bool {
-	if verbose {
+	if i.verbose {
 		for _, i := range inp {
 			os.Stderr.WriteString(i)
 		}
