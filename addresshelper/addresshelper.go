@@ -2,6 +2,8 @@ package i2paddresshelper
 
 import (
     "net/http"
+    "io/ioutil"
+    "strings"
 
     "github.com/eyedeekay/i2pasta/nup"
 
@@ -17,6 +19,7 @@ type I2paddresshelper struct{
 
     rq *http.Request
     l i2pasta.I2plog
+    aherr error
 }
 func (i *I2paddresshelper) fixUrl(addr string) string{
     return addr
@@ -26,7 +29,7 @@ func (i *I2paddresshelper) getHostname(addr, jump string) string{
     resp, err := i.client.Get(i.fixUrl(addr))
     if i.l.Error(err, "Sent request.") {
         resp.Body.Close()
-        result, rerr = ioutil.ReadAll(resp.Body)
+        result, rerr := ioutil.ReadAll(resp.Body)
         if i.l.Error(rerr, "Read response.") {
             if location := string(resp.Header.Get("Location")); location != "" {
                 contents := strings.SplitN(location, "=", 2)
@@ -52,9 +55,9 @@ func (i *I2paddresshelper) QuerySHelper(addr, jump string) string{
 func NewI2pAddressHelper(jump string, host... string) *I2paddresshelper{
     var i I2paddresshelper
     if len(host) == 1 {
-        i.samclient = goSam.NewClient(host[0] + ":7656")
+        i.samclient, i.aherr = goSam.NewClient(host[0] + ":7656")
     }else if len(host) == 2 {
-        i.samclient = goSam.NewClient(host[0] + ":" + host[1])
+        i.samclient, i.aherr = goSam.NewClient(host[0] + ":" + host[1])
     }
     i.jumpHost = jump
     i.transport = &http.Transport{
