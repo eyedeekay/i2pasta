@@ -42,12 +42,12 @@ func (i *I2paddresshelper) getHostinfo(addr, jump string) (string, string) {
 }
 
 func (i *I2paddresshelper) QueryHelper(addr string) (string, string) {
-	return i.getHostname(addr, i.jumpHost)
+	return i.getHostinfo(addr, i.jumpHost)
 
 }
 
 func (i *I2paddresshelper) QuerySHelper(addr, jump string) (string, string) {
-	return i.getHostname(addr, jump)
+	return i.getHostinfo(addr, jump)
 }
 
 func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
