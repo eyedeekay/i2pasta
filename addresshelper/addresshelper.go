@@ -2,6 +2,9 @@ package i2paddresshelper
 
 import (
     "net/http"
+
+    "github.com/eyedeekay/i2pasta/nup"
+
     "github.com/cryptix/goSam"
 )
 
@@ -14,19 +17,35 @@ type I2paddresshelper struct{
 
     rq *http.Request
 }
+func (i *I2paddresshelper) fixUrl(addr string) string{
+    return addr
+}
 
-func (i *I2paddresshelper) getRequest(addr, jump string) string{
-
+func (i *I2paddresshelper) getHostname(addr, jump string) string{
+    resp, err := i.client.Get(i.fixUrl(addr))
+    if Error(err, "Sent request.") {
+        resp.Body.Close()
+        result, rerr = ioutil.ReadAll(resp.Body)
+        if Error(rerr, "Read response.") {
+            if location := string(resp.Header.Get("Location")); location != "" {
+                contents := strings.SplitN(location, "=", 2)
+                if len(contents) == 2 {
+                    hostname := strings.Replace(strings.Replace(strings.Replace(contents[0], "http://", "", -1), "?i2paddresshelper", "", -1), "/", "", -1)
+                    return hostname
+                }
+            }
+        }
+	}
     return ""
 }
 
 func (i *I2paddresshelper) QueryHelper(addr string){
-    i.getRequest(addr, i.jumpHost)
+    i.getHostname(addr, i.jumpHost)
 
 }
 
 func (i *I2paddresshelper) QuerySHelper(addr, jump string){
-    i.getRequest(addr, jump)
+    i.getHostname(addr, jump)
 }
 
 func NewI2pAddressHelper(jump string, host... string) *I2paddresshelper{
