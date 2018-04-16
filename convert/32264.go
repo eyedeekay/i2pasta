@@ -1,12 +1,12 @@
-package i2pasta ///convert
+package i2pasta_convert ///convert
 
-import (
+/*import (
 	"crypto/sha256"
 	"encoding/base32"
 	"encoding/base64"
-)
+)*/
 
-func I2p32to64(b64 string) (string, error) {
+func (i *I2pconv)I2p32to64(b32 string) (string, error) {
 	var err error
 	/*raw64, err := base64.NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-~").DecodeString(b64) //.DecodeString(b64)
 	if Error(err, "i2pdig.go Base64 Conversion", string(raw64)) {
