@@ -16,6 +16,7 @@ type I2paddresshelper struct{
 	client    *http.Client
 
     rq *http.Request
+    l i2pasta.I2plog
 }
 func (i *I2paddresshelper) fixUrl(addr string) string{
     return addr
@@ -23,10 +24,10 @@ func (i *I2paddresshelper) fixUrl(addr string) string{
 
 func (i *I2paddresshelper) getHostname(addr, jump string) string{
     resp, err := i.client.Get(i.fixUrl(addr))
-    if Error(err, "Sent request.") {
+    if l.Error(err, "Sent request.") {
         resp.Body.Close()
         result, rerr = ioutil.ReadAll(resp.Body)
-        if Error(rerr, "Read response.") {
+        if l.Error(rerr, "Read response.") {
             if location := string(resp.Header.Get("Location")); location != "" {
                 contents := strings.SplitN(location, "=", 2)
                 if len(contents) == 2 {
@@ -61,7 +62,7 @@ func NewI2pAddressHelper(jump string, host... string) *I2paddresshelper{
 	}
 	Log("i2pdig.go Setting up Client")
 	i.client = &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+		CheckRedirect: func(req *http.Request, via []*http.Request) l.Error {
 			return http.ErrUseLastResponse
 		},
 		Transport: i.transport,
