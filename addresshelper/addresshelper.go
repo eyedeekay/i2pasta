@@ -1,7 +1,6 @@
 package i2paddresshelper
 
 import (
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -30,8 +29,6 @@ func (i *I2paddresshelper) getHostname(addr, jump string) string {
 	resp, err := i.client.Get(i.fixUrl(addr))
 	if i.l.Error(err, "Sent request.") {
 		resp.Body.Close()
-		//result, rerr := ioutil.ReadAll(resp.Body)
-		//if i.l.Error(rerr, "Read response.") {
 		if location := string(resp.Header.Get("Location")); location != "" {
 			contents := strings.SplitN(location, "=", 2)
 			if len(contents) == 2 {
@@ -39,7 +36,6 @@ func (i *I2paddresshelper) getHostname(addr, jump string) string {
 				return hostname
 			}
 		}
-		//}
 	}
 	return ""
 }
