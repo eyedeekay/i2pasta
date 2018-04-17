@@ -22,7 +22,7 @@ type I2paddresshelper struct {
 }
 
 func (i *I2paddresshelper) fixUrl(addr, jump string) string {
-    rval := strings.Replace(jump + "/jump/" + addr, "//", "/", -1)
+    rval := strings.Replace(strings.Replace(jump, "http://", "", -1) + "/jump/" + addr, "//", "/", -1)
 	return "http://" + rval
 }
 
