@@ -26,12 +26,40 @@ type I2paddresshelper struct {
 }
 
 func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
+	portIdx := strings.Index(addr, ":")
+	if portIdx >= 0 {
+		addr = addr[:portIdx]
+	}
+	addr, err := (*goSam.Client).Lookup(i.samclient, addr)
+	if err != nil {
+		return nil, err
+	}
+
+	id, _, err := (*goSam.Client).CreateStreamSession(i.samclient ,"")
+	if err != nil {
+		return nil, err
+	}
+
+	newC, err := goSam.NewClient(i.samHost + ":" + i.samPort)
+	if i.aherr != nil {
+		return nil, i.aherr
+	}
+
+	err = newC.StreamConnect(id, addr)
+	if err != nil {
+		return nil, err
+	}
+
+	return newC.SamConn, nil
+}
+
+/*func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
 	i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
 	if i.aherr != nil {
 		return nil, i.aherr
 	}
     return i.subDial(network, addr)
-}
+}*/
 
 func (i *I2paddresshelper) subDial(network, addr string) (net.Conn, error) {
 	return i.Connect()
