@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/cryptix/goSam"
+	"github.com/eyedeekay/goSam"
 )
 
 type I2paddresshelper struct {
@@ -78,6 +78,8 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 		i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
 		i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	}
+    goSam.SamHostAddress = i.samHost
+    goSam.SamHostPort = i.samPort
 	i.jumpHost = jump
 	i.transport = &http.Transport{
 		Dial: i.samclient.Dial,
