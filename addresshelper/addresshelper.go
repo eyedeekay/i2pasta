@@ -62,16 +62,21 @@ func (i *I2paddresshelper) CheckRedirect(req *http.Request, via []*http.Request)
 
 func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	var i I2paddresshelper
+
 	if len(host) == 1 {
+        i.l.Log("addresshelper.go ", len(host, host[0])
 		i.samclient, i.aherr = goSam.NewClient(host[0] + ":7656")
+        i.l.Fatal(i.aherr, "addresshelper.go SAM client connection error")
 	} else if len(host) == 2 {
+        i.l.Log("addresshelper.go ", len(host, host[0], host[1])
 		i.samclient, i.aherr = goSam.NewClient(host[0] + ":" + host[1])
+        i.l.Fatal(i.aherr, "addresshelper.go SAM client connection error")
 	}
 	i.jumpHost = jump
 	i.transport = &http.Transport{
 		Dial: i.samclient.Dial,
 	}
-	i.l.Log("i2pdig.go Setting up Client")
+	i.l.Log("addresshelper.go Setting up Client")
 	i.client = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
