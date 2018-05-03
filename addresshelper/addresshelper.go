@@ -12,7 +12,7 @@ import (
 type I2paddresshelper struct {
 	jumpHost string
     samHost string
-    samPort strings
+    samPort string
 
 	samclient *goSam.Client
 	transport *http.Transport
@@ -28,13 +28,13 @@ func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
 	if portIdx >= 0 {
 		addr = addr[:portIdx]
 	}
-	addr, i.aherr := i.samclientLookup(addr)
-	if i.aherr != nil {
+	addr, err := i.samclientLookup(addr)
+	if err != nil {
 		return nil, i.aherr
 	}
 
-	id, _, i.aherr := i.samclientCreateStreamSession("")
-	if i.aherr != nil {
+	id, _, err := i.samclientCreateStreamSession("")
+	if err != nil {
 		return nil, i.aherr
 	}
     i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
