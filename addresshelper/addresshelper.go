@@ -35,7 +35,7 @@ func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
 		return nil, err
 	}
 
-	id, _, err := (*goSam.Client).CreateStreamSession(i.samclient ,"")
+	id, _, err := (*goSam.Client).CreateStreamSession(i.samclient , "")
 	if err != nil {
 		return nil, err
 	}
