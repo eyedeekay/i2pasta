@@ -12,7 +12,7 @@ type I2plog struct {
 func (i *I2plog) Error(err error, inp ...interface{}) bool {
 	if i.verbose {
 		for _, i := range inp {
-			os.Stderr.WriteString(i)
+			os.Stderr.WriteString(i.(string))
 		}
 	}
 	if err != nil {
@@ -26,7 +26,7 @@ func (i *I2plog) Error(err error, inp ...interface{}) bool {
 func (i *I2plog) Log(inp ...interface{}) bool {
 	if i.verbose {
 		for _, i := range inp {
-			os.Stderr.WriteString(i)
+			os.Stderr.WriteString(i.(string))
 		}
 	}
 	return true
