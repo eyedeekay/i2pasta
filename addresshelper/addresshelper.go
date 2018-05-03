@@ -1,6 +1,7 @@
 package i2paddresshelper
 
 import (
+    "net"
 	"net/http"
 	"strings"
     "log"
