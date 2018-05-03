@@ -78,8 +78,6 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 		i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
 		i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	}
-    goSam.SamHostAddress = i.samHost
-    goSam.SamHostPort = i.samPort
 	i.jumpHost = jump
 	i.transport = &http.Transport{
 		Dial: i.samclient.Dial,
