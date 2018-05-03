@@ -64,11 +64,11 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	var i I2paddresshelper
 
 	if len(host) == 1 {
-        log.Println("addresshelper.go ", len(host), host[0])
+        log.Println("addresshelper.go ", jump, len(host), host[0])
 		i.samclient, i.aherr = goSam.NewClient(host[0] + ":7656")
         i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	} else if len(host) == 2 {
-        log.Println("addresshelper.go ", len(host), host[0], host[1])
+        log.Println("addresshelper.go ", len(host), jump, host[0], host[1])
 		i.samclient, i.aherr = goSam.NewClient(host[0] + ":" + host[1])
         i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	}
