@@ -3,7 +3,6 @@ package i2paddresshelper
 import (
 	"github.com/eyedeekay/i2pasta/nup"
 	"log"
-	"net"
 	"net/http"
 	"strings"
 
@@ -23,34 +22,6 @@ type I2paddresshelper struct {
 	l     i2pasta.I2plog
 	c     bool
 	aherr error
-}
-
-func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
-	portIdx := strings.Index(addr, ":")
-	if portIdx >= 0 {
-		addr = addr[:portIdx]
-	}
-	addr, err := (*goSam.Client).Lookup(i.samclient, addr)
-	if err != nil {
-		return nil, err
-	}
-
-	id, _, err := (*goSam.Client).CreateStreamSession(i.samclient , "")
-	if err != nil {
-		return nil, err
-	}
-
-	newC, err := goSam.NewClient(i.samHost + ":" + i.samPort)
-	if i.aherr != nil {
-		return nil, i.aherr
-	}
-
-	err = newC.StreamConnect(id, addr)
-	if err != nil {
-		return nil, err
-	}
-
-	return newC.SamConn, nil
 }
 
 func (i *I2paddresshelper) fixUrl(addr, jump string) string {
@@ -109,7 +80,7 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	}
 	i.jumpHost = jump
 	i.transport = &http.Transport{
-		Dial: i.Dial,
+		Dial: i.samclient.Dial,
 	}
 	i.l.Log("addresshelper.go Setting up Client")
 	i.client = &http.Client{
