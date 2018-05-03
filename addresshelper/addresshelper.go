@@ -1,19 +1,19 @@
 package i2paddresshelper
 
 import (
-    "net"
+	"github.com/eyedeekay/i2pasta/nup"
+	"log"
+	"net"
 	"net/http"
 	"strings"
-    "log"
-	"github.com/eyedeekay/i2pasta/nup"
 
 	"github.com/cryptix/goSam"
 )
 
 type I2paddresshelper struct {
 	jumpHost string
-    samHost string
-    samPort string
+	samHost  string
+	samPort  string
 
 	samclient *goSam.Client
 	transport *http.Transport
@@ -25,33 +25,35 @@ type I2paddresshelper struct {
 }
 
 func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
-    portIdx := strings.Index(addr, ":")
+	portIdx := strings.Index(addr, ":")
 	if portIdx >= 0 {
 		addr = addr[:portIdx]
 	}
-	addr, err := goSam.Lookup(addr)
+	addr, err := c.Lookup(addr)
 	if err != nil {
-		return nil, i.aherr
+		return nil, err
 	}
 
-	id, _, err := goSam.CreateStreamSession("")
+	id, _, err := c.CreateStreamSession("")
 	if err != nil {
-		return nil, i.aherr
+		return nil, err
 	}
-    i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
-    if i.aherr != nil {
-		return nil, i.aherr
-	}
-	i.aherr = i.samclient.StreamConnect(id, addr)
+
+	i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
 	if i.aherr != nil {
-		return nil, i.aherr
+		return nil, err
 	}
 
-	return i.samclient, nil
+	err = newC.StreamConnect(id, addr)
+	if err != nil {
+		return nil, err
+	}
+
+	return newC.SamConn, nil
 }
 
 func (i *I2paddresshelper) fixUrl(addr, jump string) string {
-    rval := strings.Replace(strings.Replace(jump, "http://", "", -1) + "/jump/" + addr, "//", "/", -1)
+	rval := strings.Replace(strings.Replace(jump, "http://", "", -1)+"/jump/"+addr, "//", "/", -1)
 	return "http://" + rval
 }
 
@@ -92,17 +94,17 @@ func (i *I2paddresshelper) CheckRedirect(req *http.Request, via []*http.Request)
 func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	var i I2paddresshelper
 	if len(host) == 1 {
-        log.Println("addresshelper.go ", jump, len(host), host[0])
-        i.samHost = host[0]
-        i.samPort = "7656"
+		log.Println("addresshelper.go ", jump, len(host), host[0])
+		i.samHost = host[0]
+		i.samPort = "7656"
 		i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
-        i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
+		i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	} else if len(host) == 2 {
-        log.Println("addresshelper.go ", len(host), jump, host[0], host[1])
-        i.samHost = host[0]
-        i.samPort = host[1]
+		log.Println("addresshelper.go ", len(host), jump, host[0], host[1])
+		i.samHost = host[0]
+		i.samPort = host[1]
 		i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
-        i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
+		i.l.Error(i.aherr, "addresshelper.go SAM client connection error")
 	}
 	i.jumpHost = jump
 	i.transport = &http.Transport{
@@ -115,6 +117,6 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 		},
 		Transport: i.transport,
 	}
-    i.client.Get(i.fixUrl("",jump))
+	i.client.Get(i.fixUrl("", jump))
 	return &i
 }
