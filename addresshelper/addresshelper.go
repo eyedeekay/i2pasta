@@ -3,7 +3,7 @@ package i2paddresshelper
 import (
 	"net/http"
 	"strings"
-
+    "log"
 	"github.com/eyedeekay/i2pasta/nup"
 
 	"github.com/cryptix/goSam"
