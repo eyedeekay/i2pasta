@@ -41,12 +41,12 @@ func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
     if i.aherr != nil {
 		return nil, i.aherr
 	}
-	i.aherr = newC.StreamConnect(id, addr)
+	i.aherr = i.samclient.StreamConnect(id, addr)
 	if i.aherr != nil {
 		return nil, i.aherr
 	}
 
-	return newC.SamConn, nil
+	return i.samclient, nil
 }
 
 func (i *I2paddresshelper) fixUrl(addr, jump string) string {
