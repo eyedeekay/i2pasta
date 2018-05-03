@@ -6,11 +6,11 @@ import (
 )
 
 type I2plog struct {
-	verbose bool
+	Verbose bool
 }
 
 func (i *I2plog) Error(err error, inp ...interface{}) bool {
-	if i.verbose {
+	if i.Verbose {
 		for _, i := range inp {
 			os.Stderr.WriteString(i.(string))
 		}
@@ -24,7 +24,7 @@ func (i *I2plog) Error(err error, inp ...interface{}) bool {
 }
 
 func (i *I2plog) Log(inp ...interface{}) bool {
-	if i.verbose {
+	if i.Verbose {
 		for _, i := range inp {
 			os.Stderr.WriteString(i.(string))
 		}

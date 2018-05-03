@@ -65,6 +65,7 @@ func (i *I2paddresshelper) CheckRedirect(req *http.Request, via []*http.Request)
 
 func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	var i I2paddresshelper
+    i.l.Verbose = true
 	if len(host) == 1 {
 		log.Println("addresshelper.go ", jump, len(host), host[0])
 		i.samHost = host[0]
