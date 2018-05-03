@@ -105,7 +105,7 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 	}
 	i.jumpHost = jump
 	i.transport = &http.Transport{
-		Dial: i.samclient.Dial,
+		Dial: i.Dial,
 	}
 	i.l.Log("addresshelper.go Setting up Client")
 	i.client = &http.Client{
