@@ -21,35 +21,45 @@ type I2paddresshelper struct {
 
 	rq    *http.Request
 	l     i2pasta.I2plog
+	c     bool
 	aherr error
 }
 
 func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
-	portIdx := strings.Index(addr, ":")
-	if portIdx >= 0 {
-		addr = addr[:portIdx]
-	}
-	addr, err := i.samclient.Lookup(addr)
-	if err != nil {
-		return nil, err
-	}
-
-	id, _, err := i.samclient.CreateStreamSession("")
-	if err != nil {
-		return nil, err
-	}
-
 	i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
 	if i.aherr != nil {
-		return nil, err
+		return nil, i.aherr
 	}
+    return i.subDial(network, addr)
+}
 
-	err = i.samclient.StreamConnect(id, addr)
-	if err != nil {
-		return nil, err
+func (i *I2paddresshelper) subDial(network, addr string) (net.Conn, error) {
+	return i.Connect()
+}
+
+func (i *I2paddresshelper) Connect() (net.Conn, error) {
+	if i.samclient != nil {
+		id, _, err := i.samclient.CreateStreamSession("")
+        i.l.Error(err, "addresshelper.go stream session creation error")
+		i.aherr = i.samclient.StreamConnect(id, i.jumpHost)
+		i.l.Error(i.aherr, "addresshelper.go Error connecting SAM streams", "addresshelper.go Connecting SAM streams")
+		i.l.Log("addresshelper.go Stream Connection established")
+		return i.samclient.SamConn, i.aherr
+	} else {
+		return i.reConnect()
 	}
+}
 
-	return i.samclient.SamConn, nil
+func (i *I2paddresshelper) reConnect() (net.Conn, error) {
+	i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
+	i.l.Error(i.aherr, "addresshelper.go 133 SAM Client connection error", "addresshelper.go SAM client connecting")
+		i.l.Log("addresshelper.go SAM Connection established")
+        id, _, err := i.samclient.CreateStreamSession("")
+        i.l.Error(err, "addresshelper.go stream session creation error")
+		i.aherr = i.samclient.StreamConnect(id, i.jumpHost)
+		i.l.Error(i.aherr, "addresshelper.go Connecting SAM streams", "addresshelper.go Connecting SAM streams")
+		i.l.Log("addresshelper.go Stream Connection established")
+		return i.samclient.SamConn, i.aherr
 }
 
 func (i *I2paddresshelper) fixUrl(addr, jump string) string {

@@ -1,8 +1,8 @@
 package i2pasta
 
 import (
-	"github.com/eyedeekay/i2pasta/addresshelper"
-	"github.com/eyedeekay/i2pasta/convert"
+	"./addresshelper"
+	"./convert"
 	"log"
 )
 
