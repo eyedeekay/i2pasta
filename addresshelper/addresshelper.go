@@ -29,12 +29,12 @@ func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
 	if portIdx >= 0 {
 		addr = addr[:portIdx]
 	}
-	addr, err := c.Lookup(addr)
+	addr, err := i.samClient.Lookup(addr)
 	if err != nil {
 		return nil, err
 	}
 
-	id, _, err := c.CreateStreamSession("")
+	id, _, err := i.samClient.CreateStreamSession("")
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (i *I2paddresshelper) Dial(network, addr string) (net.Conn, error) {
 		return nil, err
 	}
 
-	err = newC.StreamConnect(id, addr)
+	err = i.samclient.StreamConnect(id, addr)
 	if err != nil {
 		return nil, err
 	}
