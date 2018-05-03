@@ -83,5 +83,6 @@ func NewI2pAddressHelper(jump string, host ...string) *I2paddresshelper {
 		},
 		Transport: i.transport,
 	}
+    i.client.Get(jump)
 	return &i
 }
