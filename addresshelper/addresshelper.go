@@ -107,7 +107,7 @@ func SetPort(s string) func(*I2paddresshelper) error {
 
 func NewI2pAddressHelper(jump, host, port string) (*I2paddresshelper, error) {
 	log.Println("addresshelper.go ", jump, len(host), host[0])
-	return NewI2pAddressHelperFromOptions(SetJump(jump), SetAddr(host), SetPort(port), SetVerbose(true))
+	return NewI2pAddressHelperFromOptions(SetJump(jump), SetAddr(host), SetPort(port))
 }
 
 func NewI2pAddressHelperFromOptions(opts ...func(*I2paddresshelper) error) (*I2paddresshelper, error) {
