@@ -59,6 +59,13 @@ func (i *I2paddresshelper) QuerySHelper(addr, jump string) (string, string) {
 	return i.getHostinfo(addr, jump)
 }
 
+func (i I2paddresshelper) CheckIsUnknownAddress(addr string) bool{
+    if _, err := i.samclient.Lookup(addr); err != nil {
+        return true
+    }
+    return false
+}
+
 /* Not sure if I can do this here, but if I can, I should.
 func (i *I2paddresshelper) CheckRedirect(req *http.Request, via []*http.Request) error {
 	var err error
