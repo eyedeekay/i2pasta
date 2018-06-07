@@ -28,7 +28,7 @@ func (i *I2paddresshelper) fixUrl(addr, jump string) string {
 	trimmedjumphost := strings.Replace(jump, "http://", "", -1)
 	trimmedjumpurl := strings.Replace(addr, "http://", "", -1)
 	rval := strings.Replace(trimmedjumphost+"/jump/"+trimmedjumpurl, "//", "/", -1)
-	log.Println("http://" + rval)
+	i.l.Log("addresshelper.go http://" + rval)
 	return "http://" + rval
 }
 
