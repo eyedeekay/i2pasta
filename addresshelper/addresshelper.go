@@ -82,7 +82,7 @@ func NewI2pAddressHelperFromOptions(opts ...func(*I2paddresshelper) error) (*I2p
 			return nil, err
 		}
 	}
-	i.samclient, i.aherr = goSam.NewClientFromOptions(goSam.SetHost(i.samHost), goSam.SetPort(i.samPort), goSam.SetDebug(false))
+	i.samclient, i.aherr = goSam.NewClientFromOptions(goSam.SetHost(i.samHost), goSam.SetPort(i.samPort), goSam.SetDebug(i.l.Verbose))
 	i.transport = &http.Transport{
 		Dial: i.samclient.Dial,
 	}
