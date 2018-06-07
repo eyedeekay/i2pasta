@@ -4,7 +4,6 @@ import (
 	"github.com/eyedeekay/i2pasta/nup"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/eyedeekay/gosam"
@@ -29,7 +28,7 @@ func (i *I2paddresshelper) fixUrl(addr, jump string) string {
 	trimmedjumphost := strings.Replace(jump, "http://", "", -1)
 	trimmedjumpurl := strings.Replace(addr, "http://", "", -1)
 	rval := strings.Replace(trimmedjumphost+"/jump/"+trimmedjumpurl, "//", "/", -1)
-	log.Println("http://"+rval)
+	log.Println("http://" + rval)
 	return "http://" + rval
 }
 
@@ -67,47 +66,9 @@ func (i *I2paddresshelper) CheckRedirect(req *http.Request, via []*http.Request)
 }
 */
 
-type Option func(*I2paddresshelper) error
-
-func SetVerbose(b bool) func(*I2paddresshelper) error {
-	return func(c *I2paddresshelper) error {
-		c.l.Verbose = b
-		return nil
-	}
-}
-
-func SetAddr(s string) func(*I2paddresshelper) error {
-	return func(c *I2paddresshelper) error {
-		c.samHost = s
-		return nil
-	}
-}
-
-func SetJump(s string) func(*I2paddresshelper) error {
-	return func(c *I2paddresshelper) error {
-		c.jumpHost = s
-		return nil
-	}
-}
-
-func SetPort(s string) func(*I2paddresshelper) error {
-	return func(c *I2paddresshelper) error {
-		port, err := strconv.Atoi(s)
-		if err != nil {
-			return err
-		}
-		if port < 65536 && port > -1 {
-			c.samPort = s
-		} else {
-			c.samPort = "7656"
-		}
-		return nil
-	}
-}
-
-func NewI2pAddressHelper(jump, host, port string) (*I2paddresshelper, error) {
+func NewI2pAddressHelper(jump, host, port string, verbose bool) (*I2paddresshelper, error) {
 	log.Println("addresshelper.go ", jump, len(host), host[0])
-	return NewI2pAddressHelperFromOptions(SetJump(jump), SetAddr(host), SetPort(port))
+	return NewI2pAddressHelperFromOptions(SetJump(jump), SetAddr(host), SetPort(port), SetVerbose(verbose))
 }
 
 func NewI2pAddressHelperFromOptions(opts ...func(*I2paddresshelper) error) (*I2paddresshelper, error) {
@@ -115,12 +76,13 @@ func NewI2pAddressHelperFromOptions(opts ...func(*I2paddresshelper) error) (*I2p
 	i.samHost = "127.0.0.1"
 	i.samPort = "7656"
 	i.jumpHost = "http://inr.i2p"
+	i.l.Verbose = true
 	for _, o := range opts {
 		if err := o(&i); err != nil {
 			return nil, err
 		}
 	}
-	i.samclient, i.aherr = goSam.NewClient(i.samHost + ":" + i.samPort)
+	i.samclient, i.aherr = goSam.NewClientFromOptions(goSam.SetHost(i.samHost), goSam.SetPort(i.samPort), goSam.SetDebug(false))
 	i.transport = &http.Transport{
 		Dial: i.samclient.Dial,
 	}

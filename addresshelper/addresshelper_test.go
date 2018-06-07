@@ -10,6 +10,5 @@ func TestAddressHelper(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(addresshelper.QueryHelper("i2p-projekt.i2p"))
 	log.Println(addresshelper.QueryHelper("i2pforum.i2p"))
 }
