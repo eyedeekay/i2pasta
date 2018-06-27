@@ -18,7 +18,7 @@ func (i *I2pconv) I2p64to32(b64 string) (string, error) {
 		hash := sha256.New()
 		_, err := hash.Write([]byte(raw64)) //sha256.Sum256(raw64)
 		if i.l.Error(err, "i2pdig.go Base32 Conversion") {
-			b32 := strings.ToLower(strings.Replace(base32.StdEncoding.EncodeToString(hash.Sum(nil)), "=", "", -1)) + ".b32.i2p"
+			b32 := strings.ToLower(strings.Replace(base32.StdEncoding.EncodeToString(hash.Sum(nil)), "=", "", -1))
 			return b32, err
 		} else {
 			return "", err
