@@ -6,6 +6,7 @@ package i2pconv ///convert
 	"encoding/base64"
 )*/
 
+//This will only ever partially work, by comparing a table of base64/base32 pairs
 func (i *I2pconv) I2p32to64(b32 string) (string, error) {
 	var err error
 	/*raw64, err := base64.NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-~").DecodeString(b64) //.DecodeString(b64)

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/eyedeekay/gosam"
+	"github.com/cryptix/gosam"
 )
 
 type I2paddresshelper struct {

@@ -1,4 +1,4 @@
-package i2pconv ///convert
+package i2pconv ///vert
 
 import (
 	"crypto/sha256"
