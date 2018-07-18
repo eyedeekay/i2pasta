@@ -11,12 +11,12 @@ language: go
 
 before_install:
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    cp etc/i2pd/i2pd.i2pdig.conf ./i2pd.conf; else
+    cp etc/i2pd/i2pd.i2pasta.conf ./i2pd.conf; else
         sudo sed -i 's|xenial|bionic|g' /etc/apt/sources.list &&
         sudo apt-get update &&
         sudo apt-get dist-upgrade &&
         sudo apt-get install i2pd &&
-        sudo cp etc/i2pd/i2pd.i2pdig.conf /etc/i2pd/i2pd.conf;    fi
+        sudo cp etc/i2pd/i2pd.i2pasta.conf /etc/i2pd/i2pd.conf;    fi
 
 install:
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
