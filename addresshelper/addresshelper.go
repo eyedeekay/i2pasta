@@ -82,7 +82,7 @@ func NewI2pAddressHelperFromOptions(opts ...func(*I2paddresshelper) error) (*I2p
 	var i I2paddresshelper
 	i.samHost = "127.0.0.1"
 	i.samPort = "7656"
-	i.jumpHost = "http://inr.i2p"
+	i.jumpHost = "http://joajgazyztfssty4w2on5oaqksz6tqoxbduy553y34mf4byv6gpq.b32.i2p"
 	i.l.Verbose = true
 	for _, o := range opts {
 		if err := o(&i); err != nil {
